@@ -1,4 +1,4 @@
-
+from pygame import K_SPACE
 
 
 class Constants:
@@ -8,7 +8,6 @@ class Constants:
     window_width = 1280
     window_height = 720
     window_size = (window_width, window_height)
-    window_fps = 120
     window_title = "Cellular Automata"
     window_bg_color = (27, 29, 38)
 
@@ -23,3 +22,6 @@ class Constants:
 
     # rules
     rule_number = 1
+
+    # keyboard
+    reset_key: int = K_SPACE
