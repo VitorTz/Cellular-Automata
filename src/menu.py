@@ -3,8 +3,6 @@ from src.constants import Constants
 from src.globals import Globals
 from typing import Callable
 from pathlib import Path
-from PIL import Image as PilImage
-from datetime import datetime
 from src import functions
 import pygame
 

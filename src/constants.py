@@ -50,22 +50,22 @@ class Constants:
     }
 
     # menu
-    menu_bg = Path("res/menu.png")
+    menu_bg = Path("res/menu/menu.png")
     
-    start_btn = Path("res/start-btn.png")
-    start_btn_hover = Path("res/start-btn_hover.png")
+    start_btn = Path("res/menu/start-btn.png")
+    start_btn_hover = Path("res/menu/start-btn_hover.png")
     start_btn_topleft = (524, 331)
 
-    reset_btn = Path("res/reset-btn.png")
-    reset_btn_hover = Path("res/reset-btn_hover.png")
+    reset_btn = Path("res/menu/reset-btn.png")
+    reset_btn_hover = Path("res/menu/reset-btn_hover.png")
     reset_btn_topleft = (643, 331)
 
-    screenshot_btn = Path("res/screenshot_btn.png")
-    screenshot_btn_hover = Path("res/screenshot_btn_hover.png")
+    screenshot_btn = Path("res/menu/screenshot_btn.png")
+    screenshot_btn_hover = Path("res/menu/screenshot_btn_hover.png")
     screenshot_btn_topleft = (524, 384)
     screenshot_folder = Path("screenshot")
 
-    font = Path("res/JetBrainsMono-Regular.ttf")
+    font = Path("res/font/JetBrainsMono-Regular.ttf")
     font_size = 20
     font_color = cell_color
     menu_text_topleft = (706, 292)
