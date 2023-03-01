@@ -5,6 +5,7 @@ from typing import Callable
 from pathlib import Path
 from PIL import Image as PilImage
 from datetime import datetime
+from src import functions
 import pygame
 
 
@@ -89,32 +90,20 @@ class Button:
         self.__draw()
 
 
-    
-
 class HandleKeyboard:
 
-    __bar = "|"
 
     def __init__(self, text: Text) -> None:
         self.__text = text
+        self.__bar = "|"
     
     @property
     def text_input(self) -> str:
         return self.__text.text.replace(self.__bar, "")
 
-    def __get_digit_pressed(self) -> str:
-        digits: dict[int, str] = Constants.digits
-        pressed_keys: set[int] = Globals.pressed_keys
-        try:
-            digit: str = [digits[d] for d in pressed_keys if d in digits.keys()][0]
-            return digit
-        except Exception:
-            return ""
-        
     def __handle_backspace(self) -> None:
         if Constants.backspace in Globals.pressed_keys:
-            t = self.text_input
-            if t:
+            if self.text_input:
                 self.__text.text = self.text_input[:-1]
     
     def __add_digit(self, digit: str) -> None:
@@ -130,9 +119,8 @@ class HandleKeyboard:
 
     def main(self) -> None:
         self.__handle_backspace()
-        self.__add_digit(self.__get_digit_pressed())
+        self.__add_digit(functions.get_last_digit_pressed())
         self.__blink_bar()
-
 
 
 class Menu:
@@ -157,38 +145,23 @@ class Menu:
             Constants.screenshot_btn,
             Constants.screenshot_btn_hover,
             Constants.screenshot_btn_topleft,
-            self.__take_screenshot
+            lambda : functions.take_screenshot(self.__generation.generation)
         )
         self.__text_input = Text("", Constants.menu_text_topleft)
         self.__handle_keyboard = HandleKeyboard(self.__text_input)
         self.__generation = generation
-    
-    def __take_screenshot(self) -> None:
-        screenshot_dir: Path = Constants.screenshot_folder
-        if not screenshot_dir.exists():
-            screenshot_dir.mkdir()
-        image = PilImage.new("RGB", (Constants.grid_columns, Constants.grid_lines), Constants.window_bg_color)
-        for i, line in enumerate(self.__generation.generation):
-            for j, cell in enumerate(line):
-                if cell:
-                    image.putpixel((j, i), Constants.cell_color)
-                
-        now = datetime.now()
-        date_time = now.strftime("%d-%m-%Y_%H:%M:%S")
-        image.save(screenshot_dir / f"{date_time}.png")
     
     def __start(self) -> None:
         try:
             rule_number = int(self.__handle_keyboard.text_input)
             if not (0 <= rule_number <= 255):
                 raise ValueError()
-        except Exception as e:
-            pass
-        else:
             Globals.is_running = True
             if rule_number != Globals.rule_number:
                 Globals.rule_number = rule_number
                 self.__reset()
+        except Exception:
+            pass
 
     def __reset(self) -> None:
         self.__generation.reset()

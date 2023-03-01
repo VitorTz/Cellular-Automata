@@ -6,9 +6,6 @@ from sys import exit
 import pygame
 
 
-AliveCells = list[tuple[int, int]]
-
-
 def init() -> None:
     pygame.init()
     Globals.display = pygame.display.set_mode(Constants.window_size)

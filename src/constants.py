@@ -14,8 +14,8 @@ class Constants:
 
     # cell
     cell_color = (246, 167, 59)
-    cell_width = 1
-    cell_height = 1
+    cell_width = 2
+    cell_height = 2
     
     # grid
     grid_lines = window_height // cell_height

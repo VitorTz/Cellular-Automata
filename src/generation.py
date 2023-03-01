@@ -56,7 +56,7 @@ class Generation:
     def apply_rule(self) -> None:
         bin_number: str = bin(Globals.rule_number)[2:].zfill(8)[::-1]
         pattern_by_state: dict[str, int] = {
-            pattern: int(bin_number[i]) for i, pattern in enumerate(self.__patterns)
+            pattern: int(bin_number[i]) for i, pattern in enumerate(Constants.patterns)
         }
         line = self.__generation[self.__index_current_line]
         next_line = self.__generation[self.__index_current_line+1]
