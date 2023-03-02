@@ -23,7 +23,7 @@
 
 # Programa em funcionamento (regra 110)
 
-![](/mnt/HD/Github/Cellular-Automata/res/readme_imgs/110.png)
+![](res/readme_imgs/110.png)
 
 # Algumas regras interessantes
 
