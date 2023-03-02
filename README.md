@@ -6,8 +6,6 @@
 
     O usuário pode escolher a regra a ser visualizada a partir de um simples `menu` com botões de `Start e Reset`. Também é possível tirar capturas de tela, as capturas são salvas na pasta `screenshot` dentro da pasta principal do programa.
 
-
-
 > O menu aparece apenas com o programa pausado
 > 
 > Para pausar o programa aperte a tecla `space`
@@ -19,9 +17,13 @@
 > Pillow==9.4.0
 > pygame==2.2.0
 
-## Programa em funcionamento
+## Programa pausado
 
-![](res/readme_imgs/2023-03-01 21-54-19.gif)
+![](res/readme_imgs/img1.png)
+
+# Programa em funcionamento (regra 110)
+
+![](/mnt/HD/Github/Cellular-Automata/res/readme_imgs/110.png)
 
 # Algumas regras interessantes
 
