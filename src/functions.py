@@ -17,6 +17,10 @@ def get_last_digit_pressed() -> str:
         
 
 def take_screenshot(generation: list[list[int]]) -> None:
+    """
+        Salva uma imagem a partir do estado atual da geração.
+        A imagem é salva dentro da pasta screenshot
+    """
     screenshot_dir: Path = Constants.screenshot_folder
     if not screenshot_dir.exists():
         screenshot_dir.mkdir()

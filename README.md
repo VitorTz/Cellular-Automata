@@ -4,18 +4,19 @@
 
 # Funcionamento
 
-    O usuário pode escolher a regra a ser visualizada a partir de um simples `menu` com botões de `Start e Reset`. Também é possível tirar capturas de tela, as capturas são salvas na pasta `screenshot` dentro da pasta principal do programa.
+    O usuário pode escolher a regra a ser visualizada digitando o número desejado em uma caixa de texto no `menu`. O menu apresenta botões de `Start`, `Reset` e `Screenshot`. As capturas de tela serão salvas dentro da pasta `screenshot` na pasta principal do programa.
 
-> O menu aparece apenas com o programa pausado
-> 
-> Para pausar o programa aperte a tecla `space`
+> Os botões respondem ao clique do mouse e
+> o menu aparece apenas com o programa pausado.
 
- 
+> Para pausar/iniciar o programa aperte a tecla `space`
 
-> Requirements:
-> 
-> Pillow==9.4.0
-> pygame==2.2.0
+# Requirements 
+
+~~~python
+Pillow==9.4.0
+pygame==2.2.0
+~~~
 
 ## Programa pausado
 
