@@ -19,13 +19,9 @@
 > Pillow==9.4.0
 > pygame==2.2.0
 
-## Programa pausado
+## Programa em funcionamento
 
-![](res/readme_imgs/img1.png)
-
-### Programa em funcionamento (regra 110)
-
-![](res/readme_imgs/110.png)
+![](res/readme_imgs/2023-03-01 21-54-19.gif)
 
 # Algumas regras interessantes
 
