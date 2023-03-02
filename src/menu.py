@@ -9,6 +9,7 @@ import pygame
 
 class Image:
 
+
     def __init__(self, image: Path | pygame.Surface, topleft: tuple[int, int]) -> None:
         self.image = image
         self.rect = self.image.get_rect(topleft=topleft)
@@ -34,7 +35,7 @@ class Text:
 
     def __init__(self, text: str, topleft: tuple[int, int]) -> None:
         self.__text = text
-        self.__image = Image(self.__get_img(text), topleft)
+        self.__image = Image(self.__convert_text_to_pygame_image(text), topleft)
     
     @property
     def text(self) -> str:
@@ -43,9 +44,9 @@ class Text:
     @text.setter
     def text(self, text: str):
         self.__text = text
-        self.__image.image = self.__get_img(self.__text)
+        self.__image.image = self.__convert_text_to_pygame_image(self.__text)
     
-    def __get_img(self, text: str) -> pygame.Surface:
+    def __convert_text_to_pygame_image(self, text: str) -> pygame.Surface:
         return pygame.font.Font(Constants.font, Constants.font_size).render(
             text, True, Constants.font_color
         )
@@ -56,16 +57,25 @@ class Text:
 
 class Button:
 
+    """
+        Representa um botão em formato de imagem.
+        Recebe duas imagens, uma para seu estado padrão
+        e outra para seu estado hover. 
+        Também recebe uma função que deve ser acionada
+        com o clique do usuário no botão.
+
+    """
+
     def __init__(
             self, 
             image_default: Path, 
             image_hover: Path, 
             topleft: tuple[int, int],
-            click_event: Callable
+            click_function: Callable
         ) -> None:
         self.__image_default = Image(image_default, topleft)
         self.__image_hover = Image(image_hover, topleft)
-        self.__click_event = click_event
+        self.__click_function = click_function
     
     def __is_on_hover(self) -> bool:
         return self.__image_default.rect.collidepoint(pygame.mouse.get_pos())
@@ -80,40 +90,52 @@ class Button:
             self.__image_default.draw()
     
     def __handle_click(self) -> None:
-        if callable(self.__click_event) and self.__is_clicked():
-            self.__click_event()
+        if callable(self.__click_function) and self.__is_clicked():
+            self.__click_function()
         
     def run(self) -> None:
-        self.__handle_click()
         self.__draw()
+        self.__handle_click()
 
 
 class HandleKeyboard:
 
+    """
+        Lida com o pressionamento das teclas númericas
+        de 1 a 9 no teclado e também com a tecla backspace. 
+        Esta classe tem como função receber o número da regra a ser executada, 
+        um número de regra válido está entre 0 e 255.
+    """
 
     def __init__(self, text: Text) -> None:
-        self.__text = text
-        self.__bar = "|"
+        self.__rule_number = text  # Responsável por guardar o número da regra
+        self.__bar = "|"  # Barra que deve ficar "piscando", indicando que o usuário deve digitar algo
     
     @property
-    def text_input(self) -> str:
-        return self.__text.text.replace(self.__bar, "")
+    def number(self) -> str:
+        """Número digitado pelo usuário"""
+        return self.__rule_number.text.replace(self.__bar, "")
 
     def __handle_backspace(self) -> None:
-        if Constants.backspace in Globals.pressed_keys:
-            if self.text_input:
-                self.__text.text = self.text_input[:-1]
+        """Remove o ultimo digito da regra caso o backspace seja pressionado"""
+        if Constants.backspace in Globals.pressed_keys and self.number:
+            self.__rule_number.text = self.number[:-1]
     
     def __add_digit(self, digit: str) -> None:
-        if len(self.text_input) < 3 and digit:
-            self.__text.text = self.text_input + digit
+        """
+        Adiciona um digito no final do número. 
+        Apenas se o número não conta com 3 digitos
+        """
+        if digit and len(self.number) < 3:
+            self.__rule_number.text = self.number + digit
     
     def __blink_bar(self) -> None:
+        """Faz a barra 'picar' a cada 20 frames"""
         if Globals.frame % 20 == 0:
-            if self.__bar in self.__text.text:
-                self.__text.text = self.text_input
+            if self.__bar in self.__rule_number.text:
+                self.__rule_number.text = self.number
             else:
-                self.__text.text = self.text_input + self.__bar
+                self.__rule_number.text = self.number + self.__bar
 
     def main(self) -> None:
         self.__handle_backspace()
@@ -122,6 +144,15 @@ class HandleKeyboard:
 
 
 class Menu:
+
+
+    """
+        O menu possui:
+        Um campo de texto para o usuário entrar com o número da regra
+        Botão Start para começar a executar a regra escolhida
+        Botão Reset para reiniciar a execução da regra
+        Botão Screenshot para tirar uma captura de tela
+    """
 
 
     def __init__(self, generation: Generation) -> None:
@@ -145,19 +176,23 @@ class Menu:
             Constants.screenshot_btn_topleft,
             lambda : functions.take_screenshot(self.__generation.generation)
         )
-        self.__text_input = Text("", Constants.menu_text_topleft)
-        self.__handle_keyboard = HandleKeyboard(self.__text_input)
+        self.__rule_number = Text("", Constants.menu_text_topleft)
+        self.__handle_keyboard = HandleKeyboard(self.__rule_number)
         self.__generation = generation
     
     def __start(self) -> None:
+        """
+            Verifica se o número digitado pelo usuário é válido,
+            caso sim inicia a execução da regra.
+        """
         try:
-            rule_number = int(self.__handle_keyboard.text_input)
+            rule_number = int(self.__handle_keyboard.number)
             if not (0 <= rule_number <= 255):
                 raise ValueError()
-            Globals.is_running = True
             if rule_number != Globals.rule_number:
                 Globals.rule_number = rule_number
                 self.__reset()
+            Globals.is_running = True
         except Exception:
             pass
 
@@ -165,14 +200,12 @@ class Menu:
         self.__generation.reset()
         Globals.is_running = True
     
-    def __run_btns(self) -> None:
-        self.__start_btn.run()
-        self.__reset_btn.run()
-        self.__screenshot_btn.run()
-
     def main(self) -> None:
+        """O menu funciona apenas quando nenhuma regra está sendo executada"""
         if not Globals.is_running:
             self.__background_image.draw()
             self.__handle_keyboard.main()
-            self.__text_input.draw()
-            self.__run_btns()
+            self.__rule_number.draw()
+            self.__start_btn.run()
+            self.__reset_btn.run()
+            self.__screenshot_btn.run()

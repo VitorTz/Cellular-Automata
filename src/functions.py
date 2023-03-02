@@ -6,13 +6,14 @@ from PIL import Image
 
 
 def get_last_digit_pressed() -> str:
-        digits: dict[int, str] = Constants.digits
-        pressed_keys: set[int] = Globals.pressed_keys
-        try:
-            digit: str = [digits[d] for d in pressed_keys if d in digits.keys()][0]
-            return digit
-        except Exception:
-            return ""
+    """Retorna o ultimo digito pressionado pelo usuário no teclado."""
+    digits: dict[int, str] = Constants.digits
+    pressed_keys: set[int] = Globals.pressed_keys
+    try:
+        digit: str = [digits[d] for d in pressed_keys if d in digits.keys()][0]
+        return digit
+    except Exception:
+        return ""
         
 
 def take_screenshot(generation: list[list[int]]) -> None:

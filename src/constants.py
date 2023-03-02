@@ -11,6 +11,7 @@ class Constants:
     window_size = (window_width, window_height)
     window_title = "Cellular Automata"
     window_bg_color = (27, 29, 38)
+    window_fps = 120
 
     # cell
     cell_color = (246, 167, 59)
@@ -51,6 +52,7 @@ class Constants:
 
     # menu
     menu_bg = Path("res/menu/menu.png")
+    menu_text_topleft = (706, 292)
     
     start_btn = Path("res/menu/start-btn.png")
     start_btn_hover = Path("res/menu/start-btn_hover.png")
@@ -65,8 +67,8 @@ class Constants:
     screenshot_btn_topleft = (524, 384)
     screenshot_folder = Path("screenshot")
 
+    # font 
     font = Path("res/font/JetBrainsMono-Regular.ttf")
     font_size = 20
     font_color = cell_color
-    menu_text_topleft = (706, 292)
 
